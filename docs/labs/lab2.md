@@ -1,5 +1,5 @@
 ---
-title: Lab 2: Finding the policies on disk
+title: Lab 2 - Finding the policies on disk
 parent: Labs
 nav_order: 2
 ---
