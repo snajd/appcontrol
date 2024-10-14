@@ -1,5 +1,7 @@
 ---
 title: Lab 2: Finding the policies on disk
+parent: Labs
+nav_order: 2
 ---
 
 There are a few places a deployed policy can exist in, depending on the type of policy and the configuration:
