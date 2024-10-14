@@ -51,3 +51,8 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+search_enabled: true
+nav_enabled: true
+heading_anchors: true
+footer_content: "Copyright &copy; 2024 Robin Engström Sörensen"
