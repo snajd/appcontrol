@@ -157,4 +157,73 @@ Set-RuleOption -Option 13 .\Win11-Audit.xml
 
 ## Test an installation
 
+Download 7-zip from https://www.7-zip.org/download.html to c:\policies\
+
+Start PowerShell ISE as Administrator and run
+& "C:\Users\RobinEngström\Downloads\7z2408-x64.exe"
+Click through the installation
+
 ## Examine the NTFS Extended attributes
+
+fsutil file queryEA c:\program files\7-zip\7z.dll
+
+```
+PS C:\Program Files\7-Zip> fsutil file queryEA .\7z.dll
+
+Extended Attributes (EA) information for file C:\Program Files\7-Zip\7z.dll:
+
+Total Ea Size: 0x273
+
+Ea Buffer Offset: 0
+Ea Name: $KERNEL.SMARTLOCKER.ORIGINCLAIM
+Ea Value Length: c4
+0000:  01 00 00 00 00 00 00 00  00 00 00 00 01 00 00 00  ................
+0010:  6e 1b b2 2d 0a 47 21 54  26 5f ce 9e 43 66 68 d4  n..-.G!T&_..Cfh.
+0020:  d8 73 a4 ef 14 c1 4c 25  42 ed 03 16 bb 68 66 ed  .s....L%B....hf.
+0030:  00 00 00 00 00 00 00 00  82 00 00 00 5c 00 3f 00  ............\.?.
+0040:  3f 00 5c 00 43 00 3a 00  5c 00 57 00 69 00 6e 00  ?.\.C.:.\.W.i.n.
+0050:  64 00 6f 00 77 00 73 00  5c 00 73 00 79 00 73 00  d.o.w.s.\.s.y.s.
+0060:  74 00 65 00 6d 00 33 00  32 00 5c 00 57 00 69 00  t.e.m.3.2.\.W.i.
+0070:  6e 00 64 00 6f 00 77 00  73 00 50 00 6f 00 77 00  n.d.o.w.s.P.o.w.
+0080:  65 00 72 00 53 00 68 00  65 00 6c 00 6c 00 5c 00  e.r.S.h.e.l.l.\.
+0090:  76 00 31 00 2e 00 30 00  5c 00 50 00 6f 00 77 00  v.1...0.\.P.o.w.
+00a0:  65 00 72 00 53 00 68 00  65 00 6c 00 6c 00 5f 00  e.r.S.h.e.l.l._.
+00b0:  49 00 53 00 45 00 2e 00  65 00 78 00 65 00 00 00  I.S.E...e.x.e...
+00c0:  d0 a5 33 3c                                       ..3<
+
+Ea Buffer Offset: ec
+Ea Name: $KERNEL.PURGE.APPID.HASHINFO
+Ea Value Length: 33
+0000:  00 00 00 41 49 44 31 20  00 00 00 00 00 00 00 00  ...AID1 ........
+0010:  00 00 00 e7 9d df b6 31  9d bf 9b ac 63 82 03 5d  .......1....c..]
+0020:  23 59 7d ad 97 9d b5 e7  1a 60 5d 81 a6 1e e8 17  #Y}......`].....
+0030:  c1 e8 12                                          ...
+
+Ea Buffer Offset: 144
+Ea Name: $KERNEL.SMARTLOCKER.HASH
+Ea Value Length: 2b
+0000:  00 00 00 53 4d 48 31 20  00 00 00 e7 9d df b6 31  ...SMH1 .......1
+0010:  9d bf 9b ac 63 82 03 5d  23 59 7d ad 97 9d b5 e7  ....c..]#Y}.....
+0020:  1a 60 5d 81 a6 1e e8 17  c1 e8 12                 .`]........
+
+Ea Buffer Offset: 190
+Ea Name: $KERNEL.PURGE.SMARTLOCKER.VALID
+Ea Value Length: 4
+0000:  53 4d 56 31                                       SMV1
+
+Ea Buffer Offset: 1bc
+Ea Name: $KERNEL.PURGE.SEC.FILEHASH
+Ea Value Length: 94
+0000:  03 e7 9d df b6 31 9d bf  9b ac 63 82 03 5d 23 59  .....1....c..]#Y
+0010:  7d ad 97 9d b5 e7 1a 60  5d 81 a6 1e e8 17 c1 e8  }......`].......
+0020:  12 db 38 ac 22 12 75 ac  d0 87 cf 87 eb ad 39 3e  ..8.".u.......9>
+0030:  f7 f6 e0 46 56 11 43 c4  90 5b ba 16 d8 cc 02 c6  ...FV.C..[......
+0040:  ba 8f 37 f3 65 bf d5 ea  7a 77 ad d9 5b 77 e5 d9  ..7.e...zw..[w..
+0050:  9b ef ae e9 65 d9 a7 6b  d9 5e fa 75 ee 7f b7 79  ....e..k.^.u..y
+0060:  5d ad 66 56 5e e7 57 ab  f7 f9 7b e6 ae f5 7e 97  ].fV^.W...{...~.
+0070:  95 eb 9d 7e fb 6e fb 5f  a5 bd 5e bb 69 ba 57 5a  ...~.n._..^.i.WZ
+0080:  dd b9 af aa b6 00 00 00  7f 72 10 ca 5e a8 75 6f  ........r..^.uo
+0090:  ee ff e3 38                                       ...8
+PS C:\Program Files\7-Zip>
+
+```
