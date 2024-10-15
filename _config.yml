@@ -23,10 +23,10 @@ email: robin.engstrom@coligo.se
 description: >- # this means to ignore newlines until "baseurl:"
   Lab Materials for the App Control course
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://lemon-dune-046aa3d10.5.azurestaticapps.net/" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://appcontrol.lab.snajd.net/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: snajd
 github_username:  snajd
-
+syntax_highlighter: rouge
 # Build settings
 theme: just-the-docs
 plugins:
