@@ -145,6 +145,8 @@ Save the policy as `C:\Policies\AppLocker_MI-Final.xml`
 
 import gpedit
 
+![GPEdit.msc](/img/mod3-lab1-img1.jpg "gpedit.msc") 
+
 start-service appidsvc
 
 
