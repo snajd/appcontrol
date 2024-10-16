@@ -1,9 +1,12 @@
 ---
-title: Lab 2 - Adding Recommended block list
+title: Lab 2 - Exploring the built in block policy: driversipolicy.p7b
 parent: Module 2
 layout: home
-nav_order: 2
+nav_order: 3
 nav_enabled: true
 ---
 
-Merging policices
+driversipolicy.p7b
+
+ruleoptions
+

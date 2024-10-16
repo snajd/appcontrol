@@ -74,6 +74,5 @@ From the [documentation](https://learn.microsoft.com/en-us/windows/security/appl
 
 Doubleclick a 3076 event and click on the Details tab of the event. Scroll down and see that the logged event contains a lot of information about the file, such as file hashes and certificate info (if present). The logged event also contain information abount what policy coused the logged event.
 
-
-When completed. Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.
-Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are applied.
+**When completed. Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.
+Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are still applied.**

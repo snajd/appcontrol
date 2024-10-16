@@ -1,5 +1,5 @@
 ---
-title: Lab 5 - Removing UMCI using the WDAC Wizard
+title: Lab 5 - UMCI and Enforce
 parent: Module 1
 layout: home
 nav_order: 5
@@ -96,9 +96,10 @@ Create a new policy by copying the previous one:
 Copy-Item C:\Policies\Mod1Lab5-Win11-Enforce-KMCI.xml C:\Policies\Mod1Lab5-Win11-Enforce.xml
 ``` 
 
-Aktivera UMCI i policyn genom att använda Set-RuleOption
 
-Först, notera att Set-RuleOption inte har stöd för "get-help", som normala PowerShell-moduler. Man har istället lagt på en helt egen parameter på cmdleten, "-help"
+Activate UMCI in the policy by using Set-RuleOption
+
+*Note, that Set-RuleOptions doesn't support Get-Help, like a normal PowerShell module. Instead they have added their own "-help" parameter.
 
 ```powershell
 PS C:\Policies> set-ruleoption -help
@@ -164,3 +165,5 @@ Now when we have a policy in Enforce mode, that only allows software bundled wit
 ![Block!](/img/mod1-lab5-img4.jpg)
 
 
+**When completed. Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.
+Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are still applied.**
