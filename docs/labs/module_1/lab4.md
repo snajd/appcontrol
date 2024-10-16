@@ -14,44 +14,44 @@ nav_enabled: true
 Let's begin by copying one of the example policies to use as our starting point.
 
 ```powershell
-Copy-Item C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Audit.xml c:\Policies\ -force
-```
-
-Rename the policy file to something more manageble:
-
-```powershell
-Move-Item c:\policies\DefaultWindows_Audit.xml -destination c:\policies\Win11-Audit.xml -Force
+Copy-Item C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Audit.xml c:\Policies\Mod1Lab4-Win11-Audit.xml -force
 ```
 
 Set a name and a version string on the new policy:
 
 ```powershell
-Set-CIPolicyIdInfo -FilePath c:\policies\Win11-Audit.xml -PolicyName "Corp Windows 11 Audit Policy" -PolicyId "20241010" -ResetPolicyID
+$policyid = Set-CIPolicyIdInfo -FilePath c:\Policies\Mod1Lab4-Win11-Audit.xml -PolicyName "Module 1 Lab 4 Windows 11 Audit Policy" -PolicyId "20241010" -ResetPolicyID
 ```
 
-Open the `C:\Policies\DefaultWindows_Audit.xml` file in a text editor and scoll through it. Look at what RuleOptions are configured and that the name and version we just configured are in the Settings element at the bottom. Close the file.
+Open the `C:\Policies\Mod1Lab4-Win11-Audit.xml` file in a text editor and scoll through it. Look at what RuleOptions are configured and that the name and version we just configured are in the Settings element at the bottom. Close the file.
 
 
 
 Get the policy ready for deployment by converting it from XML to binary format:
 
 ```powershell
-ConvertFrom-CIPolicy -XmlFilePath C:\Policies\Win11-Audit.xml -BinaryFilePath C:\Policies\Win11-Audit.bin
+ConvertFrom-CIPolicy -XmlFilePath C:\Policies\Mod1Lab4-Win11-Audit.xml -BinaryFilePath C:\Policies\Mod1Lab1-Win11-Audit.bin
 ```
 
-Because we are using the multiple policy format, we need to name the policy `"<PolicyIDGUID>.clp"`
+Because we are using the multiple policy format, we need to name the policy `"<PolicyIDGUID>.cip"`. Luckily, when we ran Set-CIPolicyIdInfo before, we saved the PolicyID name to the $policyid variable. If we forgot that, you can get the PolicyID from the XML by using the command below
 
 ```powershell
-$policyid = ([xml]$id = get-content C:\Policies\Win11-Audit.xml).SiPolicy.PolicyID
-Move-Item C:\Policies\Win11-Audit.bin -Destination "C:\Policies\$policyid.clp"
+$policyid = ([xml]$id = get-content C:\Policies\Mod1Lab4-Win11-Audit.xml).SiPolicy.PolicyID
 ```
+
+Rename the policy to the correct naming convention:
+
+```powershell
+Move-Item C:\Policies\Mod1Lab4-Win11-Audit.xml -Destination "C:\Policies\$policyid.cip"
+```
+
 
 Deploy the policy by copying it to the correct location for multiple policy format policies:
 
 **NOTE: This requires elevation**
 
 ```powershell
-Copy-Item "C:\Policies\$policyid.clp" -Destination C:\windows\system32\CodeIntegrity\CiPolicies\Active
+Copy-Item "C:\Policies\$policyid.cip" -Destination C:\windows\system32\CodeIntegrity\CiPolicies\Active
 ```
 
 Restart the virtual machine to apply the policy.
@@ -74,3 +74,6 @@ From the [documentation](https://learn.microsoft.com/en-us/windows/security/appl
 
 Doubleclick a 3076 event and click on the Details tab of the event. Scroll down and see that the logged event contains a lot of information about the file, such as file hashes and certificate info (if present). The logged event also contain information abount what policy coused the logged event.
 
+
+When completed. Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.
+Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are applied.
