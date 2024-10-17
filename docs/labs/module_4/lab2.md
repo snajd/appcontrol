@@ -1,5 +1,5 @@
 ---
-title: Lab 2 - Sign a PowerShell Script
+title: Lab 2 - Signing a PowerShell Script and Constrained Language Mode
 parent: Module 4
 layout: home
 nav_order: 2
@@ -14,7 +14,7 @@ List your installed code signing certificates:
 
 > Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
 
-Hopefully you just got one installed.
+Hopefully you just got one Code Signing Certificate installed.
 
 If you want to see more information, you can pipe Get-Childitem to Filter-List:
 

@@ -101,35 +101,6 @@ SignerInfo             :
 TimeCreated            : 10/17/2024 12:18:28 PM
 ProcessID              : 4
 User                   : DESKTOP-MR6QBF1\SYSTEM
-EventType              : Enforce
-SigningScenario        : Driver
-UnresolvedFilePath     : \Device\HarddiskVolume3\drivers\asrock.sys
-FilePath               : C:\drivers\asrock.sys
-SHA1FileHash           : F42453C6A062BDC95D84E3C7CF1521A94AE615E5
-SHA1AuthenticodeHash   : 6C1BB3A72EBFB5359B9E22CA44D0A1FF825A68F2
-SHA256FileHash         : 4BF974F5D3489638A48EE508B4A8CFA0F0262909778CCDD2E871172B71654D89
-SHA256AuthenticodeHash : 904D8D0DB7B3ED747ECFBB04386DFBE23B71FFD054F32AB17F65BC17D500F730
-UnresolvedProcessName  : System
-ProcessName            :
-RequestedSigningLevel  : Authenticode-Signed
-ValidatedSigningLevel  : Unsigned
-PolicyName             : Module 1 Lab 5 Windows 11 Enforce Policy (UMCI/KMCI)
-PolicyID               : 20241016
-PolicyGUID             : C22C1FB1-B088-4000-BAC2-10AEF4893794
-PolicyHash             : A4E5B1D5BD37F47CEA23DD932755D81838B64764A1411ABFEA4E2D612B52A9A2
-OriginalFileName       : AsrDrv.sys
-InternalName           : AsrDrv.sys
-FileDescription        : ASRock IO Driver
-ProductName            : ASRock IO Driver
-FileVersion            : 1.0.0.0
-PackageFamilyName      :
-UserWriteable          : False
-FailedWHQL             :
-SignerInfo             :
-
-TimeCreated            : 10/17/2024 12:18:28 PM
-ProcessID              : 4
-User                   : DESKTOP-MR6QBF1\SYSTEM
 EventType              : Audit
 SigningScenario        : Driver
 UnresolvedFilePath     : \Device\HarddiskVolume3\drivers\asrock.sys
@@ -157,3 +128,9 @@ FailedWHQL             :
 SignerInfo             :
 
 ```
+
+As we can see, we got two events. One Audit event from our `Corp: Microsoft Driver Block List` policy, and one Enforce event from `Microsoft Windows Driver Policy`. The error message we got when trying to load the driver was really App Control blocking the kernel binary from loading!
+
+
+**When completed. Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.
+Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are still applied.**
