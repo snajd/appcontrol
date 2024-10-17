@@ -1,5 +1,5 @@
 ---
-title: Lab 1 - Adding Recommended Driver Blocklist manually
+title: Lab 1 - Adding Recommended Driver Blocklist
 parent: Module 2
 layout: home
 nav_order: 1
@@ -53,22 +53,49 @@ If we scroll down a bit further in `C:\Policys\MSRecommendedDriverBlockList.xml`
  <Allow ID="ID_ALLOW_ALL_1" FriendlyName="" FileName="*" />
 ```
 
-The policy begins with two allow rules, one for KMCI and one for UMCI. This is because every other rule in this policy file is a Deny rule. But you can't have a policy with only deny rules becase then nothing would be allowed. This policy is configured to allow everything - except the vulnerable drivers. Makes sense.
+After the RuleOption part (where we can see that this is a policy configured for Audit mode) The policy begins with two allow rules, one for KMCI and one for UMCI. This is because every other rule in this policy file is a Deny rule. But you can't have a policy with only deny rules becase then nothing would be allowed. This policy is configured to allow everything - except the vulnerable drivers. Makes sense.
 
 The two allow rules also allows us to do something else: we can use multiple Base polices! One just for the Block list and another one for our own environment. As you may remember from yesterday: if you have multiple Base policies, everything that runs needs to be allowed in _all_ base policies.
+
 
 ## Modifying and deploying the policy
 
 Lets start by converting the policy to Multiple Policy format and give it a name and a version with the date we downloaded the policy on.
 
 ```powershell
-$policyid = Set-CIPolicyIdInfo -FilePath C:\Policies\MSRecommendedDriverBlocklist.xml -PolicyName "Custom: Microsoft Driver Block List" -PolicyId "20241016" -ResetPolicyID
+Set-CIPolicyIdInfo -FilePath C:\Policies\MSRecommendedDriverBlocklist.xml -PolicyName "Custom: Microsoft Driver Block List" -PolicyId "20241016" -ResetPolicyID
 ```
-The ResetPolicyID parameter converts a policy to Multiple Policy format for us, and as we know from previous labs, the result that is written to stdout from Set-CIPolicyIdInfo, is the new PolicyID, that we need when we rename the policy, we can store that in a variable.
+The ResetPolicyID parameter converts a policy to Multiple Policy format for us, and also generates a new guid for PolicyID
 
-## Deploy the Base policy
+Deploy the new policy by running the command below.
+```powershell
+# Get the policyid from the policy file:
+$policyid = ([xml]$id = get-content c:\Policies\MSRecommendedDriverBlocklist.xml).SiPolicy.PolicyID
+
+# Convert the policy to binary format and make it an active policy by putting it in the right folder
+ConvertFrom-CIPolicy -XmlFilePath C:\Policies\MSRecommendedDriverBlocklist.xml -BinaryFilePath C:\Windows\System32\CodeIntegrity\CiPolicies\Active\$policyid.cip
+
+# Refresh the policy
+& 'C:\tools\RefreshPolicy(AMD64).exe'
 
 ```
-ConvertFrom-CIPol
 
-ConvertFrom-CIPolicy -XmlFilePath C:\Policies\MSRecommendedDriverBlocklist.xml -BinaryFilePath C:\Windows\System32\CodeIntegrity\CiPolicies\Active\$policyid.cip <-- funkar skitdåligt. Skriver ju ut mer än bara policyid>
+Run citool to verify that the policy was applied:
+```
+PS C:\Policies> citool -lp
+Policy:
+    Policy ID: 97ada625-70f7-49c9-a9c1-14f021e53de0
+    Base Policy ID: 97ada625-70f7-49c9-a9c1-14f021e53de0
+    Friendly Name: Corp: Microsoft Driver Block List
+    Version: 2814751581470720
+    Platform Policy: false
+    Has File on Disk: true
+    Is Currently Enforced: true
+    Is Authorized: true
+    Status: 0
+```
+
+
+Congratulations, we are now auditing all recommended vulnerable drivers, according to Microsoft.
+
+Not very exiting, I know. But in a future lab, we will put this policy to the test!
