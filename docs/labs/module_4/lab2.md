@@ -6,7 +6,22 @@ nav_order: 2
 nav_enabled: true
 ---
 
-# Sign a PowerShell script
+# Lab 2 - Signing a PowerShell Script and Constrained Language Mode
+
+## Script Enforcement
+
+Skapa en base policy i WDAC Policy Wizard med Script Enforcement:Enabled
+
+## Skapa ett powershell script som bara spottar ur sig
+
+$Executioncontext.session.lanaguagemode
+
+## Skriv lite om CLM
+
+
+
+
+## Sign a PowerShell script
 
 Make sure that your CodeSigning certificate is installed in the Personal store of the logged on user.
 Open a PowerShell prompt

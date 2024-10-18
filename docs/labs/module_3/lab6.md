@@ -7,6 +7,8 @@ nav_enabled: true
 ---
 
 
+WIRESHARK!
+
 Get-WDACCodeIntegrityEvent -SinceLastPolicyRefresh -Kernel
 
 

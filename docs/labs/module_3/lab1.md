@@ -165,7 +165,8 @@ Click through the installation
 
 ## Examine the NTFS Extended attributes
 
-fsutil file queryEA c:\program files\7-zip\7z.dll
+Open a elevated terminal and run:
+
 
 ```
 PS C:\Program Files\7-Zip> fsutil file queryEA .\7z.dll
@@ -227,3 +228,5 @@ Ea Value Length: 94
 PS C:\Program Files\7-Zip>
 
 ```
+
+SKRIV MER
