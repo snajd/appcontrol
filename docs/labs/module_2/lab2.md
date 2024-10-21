@@ -2,7 +2,7 @@
 title: Lab 2 - Exploring the built in driver block policy
 parent: Module 2
 layout: home
-nav_order: 3
+nav_order: 2
 nav_enabled: true
 ---
 

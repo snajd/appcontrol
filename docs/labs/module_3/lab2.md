@@ -2,7 +2,7 @@
 title: Lab 2 - Whitelist an application using PackageInspector and New-CIPolicy
 parent: Module 3
 layout: home
-nav_order: 1
+nav_order: 2
 nav_enabled: true
 ---
 

@@ -2,7 +2,7 @@
 title: Lab 3 - LOLDrivers
 parent: Module 2
 layout: home
-nav_order: 4
+nav_order: 3
 nav_enabled: true
 ---
 

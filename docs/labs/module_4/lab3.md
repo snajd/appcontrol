@@ -2,7 +2,7 @@
 title: Lab 3 - Signing an app using catalog signing
 parent: Module 4
 layout: home
-nav_order: 
+nav_order: 3
 nav_enabled: true
 ---
 
@@ -26,17 +26,17 @@ It should be located in
 
 ## Install and create a catalog file for an application:
 
-Let's download a real classic applicaton to use for our catalog signing - Total Commander. We are going to pretend this is a totally unsigned legacy application that we need to sign ourselves by creating a catalog file.
+It turs out, modern application developers are pretty good at signing their binaries, but I managed to find a software that is unsigned and that we also can use in this lab - CFF Explorer. 
 
-Start by downloading Total Commander from here [https://totalcommander.ch/1103/tcmd1103x64.exe](https://totalcommander.ch/1103/tcmd1103x64.exe). Save it to C:\Install
+Start by downloading CFF Explorer from here [https://ntcore.com/files/ExplorerSuite.exe](https://ntcore.com/files/ExplorerSuite.exe). Save it to C:\Install
 
 Start packageinspector like we did in Module 3:
-`packageinspector.exe start C: -path C:\install\tcmd1103x64.exe`
+`packageinspector.exe start C: -path C:\install\ExplorerSuite.exe`
 
-Start the installer of Total Commander by doubleclicking `C:\install\tcmd1103x64.exe`, confirm all defaults and Press OK to close the installation when the Installation was successful.
+Start the installer of Total Commander by doubleclicking `C:\install\ExplorerSuite.exe`, confirm all defaults and Press Finish to close the installation when the Installation was successful.
 
 Stop PackageInspector and provide a path to a .cat-file and a .cdf-file
-`PackageInspector.exe stop c: -out cat -name c:\install\totalcmd.cat -cdfpath c:\install\totalcmd.cdf`
+`PackageInspector.exe stop c: -out cat -name c:\install\cffexplorer.cat -cdfpath c:\install\cffexplorer.cdf`
 
 ## Inspect and Sign the catalog file
 
@@ -44,7 +44,7 @@ Stop PackageInspector and provide a path to a .cat-file and a .cdf-file
 
 
 Get the filehashes of all the installed files:
-get-childitem -recurse 'C:\Program Files\totalcmd\' | Get-FileHash
+get-childitem -recurse Get-ChildItem -Recurse "C:\Program Files\NTCore\Explorer Suite" | Get-FileHash
 
 Doubleclick c:\install\totalcmd.cat and click the Security Catalog tab.
 Can you find some of the hashes? Why or why not?
@@ -57,7 +57,7 @@ Open CFF Explorer on the start menu and open one of the files you *did'nt* find 
 
 Sign the cat file:
 
-& 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe' sign /n "CodeSign" /fd sha256 /v C:\install\totalcmd.cat
+& 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe' sign /n "CodeSign" /fd sha256 /v C:\install\cffexplorer.cat
 
 That should result in this message:
 ```
@@ -68,7 +68,7 @@ The following certificate was selected:
     SHA1 hash: 3078086484D9242BD39D8971C419E07C61096BDA
 
 Done Adding Additional Store
-Successfully signed: C:\install\totalcmd.cat
+Successfully signed: C:\install\cffexplorer.cat
 
 Number of files successfully Signed: 1
 Number of warnings: 0
@@ -81,10 +81,25 @@ Click on View Signature and see that the file is now signed with our CodeSign-ce
 In order for a computer to trust a catalog file, Windows needs to know of it's existance. For Kernel drivers, that cat file is always stored in the same directory as the other driver files. For our own signed catalogs, we need to distribute the cat file to `%windir%\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}`
 
 
-`copy-item C:\install\totalcmd.cat "c:\windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}"`
+
 
 If we run 
-`Get-AuthenticodeSignature 'C:\Program Files\totalcmd\TOTALCMD64.EXE' | select *`, we unfortunatly see the binary as AuthentiCode signed. Thats because i couldn't find any good example apps.
+PS C:\Users\RobinEngström> Get-AuthenticodeSignature "C:\Program Files\NTCore\Explorer Suite\Task Explorer.exe"
+
+
+    Directory: C:\Program Files\NTCore\Explorer Suite
+
+
+SignerCertificate                         Status                                               Path
+-----------------                         ------                                               ----
+                                          NotSigned                                            Task Explorer.exe
+
+
+
+`copy-item C:\install\cffexplorer.cat "c:\windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}"`
+
+
+## FUNKAR INTE. FELSÖK OM DET GÅR.
 
 ## Add our signing certificate to our App Control Policy
 
