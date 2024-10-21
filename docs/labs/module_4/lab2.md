@@ -10,7 +10,7 @@ nav_enabled: true
 
 ## Script Enforcement
 
-Skapa en base policy i WDAC Policy Wizard med Script Enforcement:Enabled
+Skapa en base policy i WDAC Policy Wizard som inte har Script Enforcement:Disabled
 
 ## Skapa ett powershell script som bara spottar ur sig
 
@@ -18,7 +18,7 @@ $Executioncontext.session.lanaguagemode
 
 ## Skriv lite om CLM
 
-
+PowerShell använder inte regelverket i policyn utan vad _datorn litar på_
 
 
 ## Sign a PowerShell script

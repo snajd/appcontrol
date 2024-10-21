@@ -12,3 +12,4 @@ länka till hur jag gjorde certen
 Lägg till certen till policy
 
 undersök en fil och se vem som signerat den
+
