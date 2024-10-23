@@ -10,15 +10,14 @@ nav_enabled: true
 
 ## Script Enforcement
 
-Skapa en base policy i WDAC Policy Wizard som inte har Script Enforcement:Disabled
+Let's start by creating a PowerShell script for us to sign.
 
-## Skapa ett powershell script som bara spottar ur sig
+Copy the following lines and paste in a text editor and save the file as `C:\Install\script.ps1`
 
-$Executioncontext.session.lanaguagemode
-
-## Skriv lite om CLM
-
-PowerShell använder inte regelverket i policyn utan vad _datorn litar på_
+```powershell
+# Testscript
+Write-Host "Hej från scriptet, vi kör just nu i följande LanguageMode:" $ExecutionContext.SessionState.LanguageMode
+```
 
 
 ## Sign a PowerShell script
@@ -27,7 +26,7 @@ Make sure that your CodeSigning certificate is installed in the Personal store o
 Open a PowerShell prompt
 List your installed code signing certificates:
 
-> Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
+Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
 
 Hopefully you just got one Code Signing Certificate installed.
 
@@ -52,13 +51,26 @@ Now, when we have found our certificate we want to assign it to a variable
 
 ```powershell
 $cert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
+Set-AuthenticodeSignature -Certificate $cert -TimestampServer http://timestamp.digicert.com -FilePath C:\install\script.ps1
 ```
-Set-AuthenticodeSignature -Certificate $cert -TimestampServer http://timestamp.digicert.com -FilePath C:\Policies\Webinar\webinar.ps1
 
+And thats it! Our script is signed and timestamped.
 
-Get-AuthenticodeSignature C:\Policies\Webinar\webinar.ps1 | select *
+Check the signing of the script:
+```powershell
+Get-AuthenticodeSignature C:\install\script.ps1 | select *
+```
 
+Now open up our trusty WDAC Policy Wizard again. 
+Create a new Base policy with the Default Windows Mode template.
+Make sure that "Disable Script Enforcement" is not checked and that the policy is not in Audit mode.
+In Files Rules, click on +Add Custom Rule
+Under Custom Rule Conditions, Uncheck Kernel Mode and set the rule type to Publisher.
+Click on Browse next to the "reference file" textbox and browse to the newly signed C:\Install\script.ps1
+Click on Create Rule to whitelist everything signed by the CodeSign certificate.
+Press Next to build a create the policy.
 
+Deploy the policy and refresh with a tool or reboot the computer to apply the policy.
 
-
-SKAPA ETT SCRIPT SOM SKRIVER UT VILKEN EXECUTIONCONTEXT VI KÖR I!!!
+If everything is working correctly, you should be able to run the signed script and it will "spit out" FullLanguage.
+Create a new script that you don't sign and paste the same content as we did at the beginning of this lab. The unsigned script should write "ConstrainedLanguageMode" to the powershell prompt.

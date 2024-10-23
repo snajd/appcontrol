@@ -6,6 +6,8 @@ nav_order: 3
 nav_enabled: true
 ---
 
+# Lab 3 - Signing an app using catalog signing
+
 ## Download Windows SDK (to get signtool.exe)
 
 https://developer.microsoft.com/sv-se/windows/downloads/windows-sdk/
@@ -33,27 +35,21 @@ Start by downloading CFF Explorer from here [https://ntcore.com/files/ExplorerSu
 Start packageinspector like we did in Module 3:
 `packageinspector.exe start C: -path C:\install\ExplorerSuite.exe`
 
-Start the installer of Total Commander by doubleclicking `C:\install\ExplorerSuite.exe`, confirm all defaults and Press Finish to close the installation when the Installation was successful.
+Start the installer of CFF Explorer by doubleclicking `C:\install\ExplorerSuite.exe`, confirm all defaults and Press Finish to close the installation when the Installation was successful.
 
 Stop PackageInspector and provide a path to a .cat-file and a .cdf-file
 `PackageInspector.exe stop c: -out cat -name c:\install\cffexplorer.cat -cdfpath c:\install\cffexplorer.cdf`
 
 ## Inspect and Sign the catalog file
 
-## FELSÖKNING TÅG:
-
-
 Get the filehashes of all the installed files:
 get-childitem -recurse Get-ChildItem -Recurse "C:\Program Files\NTCore\Explorer Suite" | Get-FileHash
 
-Doubleclick c:\install\totalcmd.cat and click the Security Catalog tab.
+Doubleclick c:\install\cffexplorer.cat and click the Security Catalog tab.
 Can you find some of the hashes? Why or why not?
 
-Download and install CFF Explorer:
-https://ntcore.com/files/ExplorerSuite.exe
-
 Open CFF Explorer on the start menu and open one of the files you *did'nt* find a matching hash for.
-
+CFF Explorer can display the SHA-1 or MD5 embedded hash in the files.
 
 Sign the cat file:
 
@@ -75,7 +71,7 @@ Number of warnings: 0
 Number of errors: 0
 ```
 
-Doubleclick C:\install\totalcmd.cat
+Doubleclick C:\install\cffexplorer.cat
 Click on View Signature and see that the file is now signed with our CodeSign-certificate and that the signature is valid.
 
 In order for a computer to trust a catalog file, Windows needs to know of it's existance. For Kernel drivers, that cat file is always stored in the same directory as the other driver files. For our own signed catalogs, we need to distribute the cat file to `%windir%\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}`
@@ -96,10 +92,11 @@ SignerCertificate                         Status                                
 
 
 
+Copy the signed cat file to catroot:
+Microsofts have a few suggestions on how this can be done with Group Policy or ConfigMgr [here](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/deployment/deploy-catalog-files-to-support-appcontrol)
+
 `copy-item C:\install\cffexplorer.cat "c:\windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}"`
 
-
-## FUNKAR INTE. FELSÖK OM DET GÅR.
 
 ## Add our signing certificate to our App Control Policy
 
@@ -111,3 +108,5 @@ Open 'C:\Policies\Mod3Lab2-Win11-Base.xml' and find our singning certificate und
 Scroll down to SigningScenario value 12 (this is the User Mode part of the policy) and verify that the SignerId is also stored there.
 
 
+Optionally:
+Deploy and test the policy
