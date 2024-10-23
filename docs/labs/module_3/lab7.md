@@ -66,16 +66,28 @@ copy *.cip C:\Windows\system32\CodeIntegrity\CiPolicies\Active\
 & 'C:\tools\RefreshPolicy(AMD64).exe'
 
 
-Clear the Microsoft-Windows-CodeIntegrity/Operational event log
-
-
+Clear the `Microsoft-Windows-CodeIntegrity/Operational` event log
 
 
 
 
 ## Switch to Enforce mode
+Set-RuleOption -Option 3 -Delete -FilePath .\Mod3Lab2-Win11-Base.xml
+restart-computer
 
+Verify that you can start the whitelisted programs but not NotePad++ for example.
 
+Copy the whole "C:\Program Files\Notepad++" folder to C:\Corporate\Legacy\Apps
+
+Try and open "C:\Corporate\Legacy\Apps\Notepad++\notepad++.exe"
+
+Still doesnt work
+
+Check the ACL on c:\Corporate\Legacy\Apps folder. Authenticated Users have Modify permissions. Disable inheritance on the Apps folder and remove Authenticated users from the DACL.
+
+Restart the computer again to force a reapply of the policies.
+
+# FELSÖK
 
 
 

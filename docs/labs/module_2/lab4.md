@@ -21,11 +21,11 @@ So long story short: If we want full control of what can run on our systems, we 
 Instead of doing things the hard way, with PowerShell at the command line, we now are going to create our policy using the WDAC Policy Wizard. You could of course do this exercise in the exact same way as in the previous lab, if you rather use PowerShell than a graphical application.
 
 
-Start by opening WDAC Policy Wizard
-Chose Create a new base or supplemental policy
-Press Next to confirm that we want to create a Multiple Policy format Base policy
-Check "Default Windows Mode". This is the same as the DefaultWindows_Audit.xml from the ExamplePolicies.
-Name the policy: "Module 2 Lab 4 - Recommended Block list (UMCI/KMCI)" and save it to C:\Policies\Mod2Lab4-Recommended-UMCI-KMCI.xml
+1. Start by opening WDAC Policy Wizard
+2. Chose Create a new base or supplemental policy
+3. Press Next to confirm that we want to create a Multiple Policy format Base policy
+4. Check "Default Windows Mode". This is the same as the DefaultWindows_Audit.xml from the ExamplePolicies.
+5. Name the policy: "Module 2 Lab 4 - Recommended Block list (UMCI/KMCI)" and save it to C:\Policies\Mod2Lab4-Recommended-UMCI-KMCI.xml
 
 **THERE IS A TYPO IN THE SCREENSHOT** GÖR OMOMMOMOMOM
 ![WDACWizard](/img/mod2-lab4-img1.jpg)

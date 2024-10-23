@@ -13,12 +13,12 @@ If you have the [Attack Surface Reduction rule](https://learn.microsoft.com/en-u
 
 
 
-Loldrivers.io is a great site for finding vulnerable drivers! They list the hashes and provides rules for YARA, sysmon and even WDAC (App Control). They also provide copies of the actual driver files.
+[Loldrivers.io](https://www.loldrivers.io/) is a great resource for finding vulnerable drivers. They list the hashes and provides rules for YARA, sysmon and even WDAC (App Control). They also provide copies of the actual driver files.
 
 
 ## Find a blocked driver
 
-If we take look in the `MSRecommendedBlocklist.xml` we deployed in Lab 2, we can test if our policy actually is working.
+If we take look in the `Mod2Lab1-MSRecommendedDriverBlockList.xml` we deployed in Lab 2, we can test if our policy actually is working.
 
 Lets take a random hash and search for it on loldrivers.io:
 
@@ -31,13 +31,24 @@ If we click on AsrDrv we get more information. And if we scroll down we can see 
 
 Let's download the vulnerable driver and see what happens when we load it.
 
-Press Download and save the file to C:\Drivers
+Press Download and save the file to `C:\Drivers`
 
 
+1. Rename the drive to something readable:
 
-PS C:\drivers> mv .\ab859723016484790c87b2218931d55f.bin asrock.sys
+```powershell
+Move-Item C:\drivers\ab859723016484790c87b2218931d55f.bin asrock.sys
+```
+
+Now let's install the vulnerable ASRock driver as a service:
+```
 PS C:\drivers> sc.exe create asrock.sys binpath=c:\drivers\asrock.sys type=kernel
 [SC] CreateService SUCCESS
+```
+
+If we try to start and query the newly installed service it doesn't seem to work:
+
+```
 PS C:\drivers> sc start asrock.sys
 PS C:\drivers> sc query asrock.sys
 PS C:\drivers>
@@ -56,7 +67,7 @@ At line:1 char:1
     + CategoryInfo          : OpenError: (System.ServiceProcess.ServiceController:ServiceController) [Start-Service],
    ServiceCommandException
     + FullyQualifiedErrorId : CouldNotStartService,Microsoft.PowerShell.Commands.StartServiceCommand
-
+```
 
 
 A lot of errors.
@@ -65,8 +76,11 @@ Lets see if we have something in our CodeIntegrity Logs!
 
 It's starting to become a bit tiresome to constantly open the Event log and browse to the CodeIntegrity\Operational log. Lets use another great function i WDACTools: `Get-WDACCodeIntegrityEvent`
 
-```
-PS C:\drivers> Get-WDACCodeIntegrityEvent -Kernel -SinceLastPolicyRefresh
+Return to the terminal window where you imported WDACConfig (or import it again as we did before).
+Then run the Get-WDACCodeIntegrityEvent cmdlet:
+
+```powershell
+Get-WDACCodeIntegrityEvent -Kernel -SinceLastPolicyRefresh
 
 
 TimeCreated            : 10/17/2024 12:18:28 PM
@@ -132,5 +146,9 @@ SignerInfo             :
 As we can see, we got two events. One Audit event from our `Corp: Microsoft Driver Block List` policy, and one Enforce event from `Microsoft Windows Driver Policy`. The error message we got when trying to load the driver was really App Control blocking the kernel binary from loading!
 
 
-**When completed. Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.
-Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are still applied.**
+
+**When completed:**
+
+**Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.**
+
+**Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are still applied.**

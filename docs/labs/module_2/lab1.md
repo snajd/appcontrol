@@ -15,11 +15,11 @@ Microsoft [hosts a list of vulnerable drivers](https://learn.microsoft.com/en-us
 
 >The blocklist is updated with each new major release of Windows, typically 1-2 times per year, including most recently with the Windows 11 2022 update >released in September 2022. The most current blocklist is now also available for Windows 10 20H2 and Windows 11 21H2 users as an optional update from >Windows Update. Microsoft will occasionally publish future updates through regular Windows servicing.
 
-Visit https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/design/microsoft-recommended-driver-block-rules and scroll down to where the policy start. Click the Copy button on the upper right side of the code window that displays the policy xml.
+Visit [https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/design/microsoft-recommended-driver-block-rules](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/design/microsoft-recommended-driver-block-rules) and scroll down to where the Vulnerable driver blocklist XML starts. Click the Copy button on the upper right side of the code window that displays the policy xml.
  
 ## Examining the policy
 
-Open a new Text editor window and paste the policy xml. Save this to `C:\Policys\MSRecommendedDriverBlockList.xml`
+Open a new Text editor window and paste the policy xml. Save this to `C:\Policys\Mod2Lab1-MSRecommendedDriverBlockList.xml`
 
 OK, now we have a policy downloaded from the internet, now what?
 
@@ -28,6 +28,7 @@ Let's start by looking at the policy format. Is the policy in Single Policy Form
 By looking at the first few lines, we can compare it to one of our own Multple Policy format policys that we created in Module 1
 
 
+**C:\Policys\Mod2Lab1-MSRecommendedDriverBlockList.xml**:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <SiPolicy xmlns="urn:schemas-microsoft-com:sipolicy">
@@ -35,6 +36,7 @@ By looking at the first few lines, we can compare it to one of our own Multple P
   <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
 ```
 
+**C:\Policies\Mod1Lab5-Win11-Audit.xml**:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <SiPolicy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Base Policy">
@@ -44,9 +46,9 @@ By looking at the first few lines, we can compare it to one of our own Multple P
   <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
 ```
 
-The above snippet that we copied from Microsoft is clearly in Single Policy Format. We will need to convert it before we use it.
+The top snippet above that we copied from Microsoft is clearly in Single Policy Format. We will need to convert it to Multiple Policy Format before we can use it.
 
-If we scroll down a bit further in `C:\Policys\MSRecommendedDriverBlockList.xml` we come to another intresting part:
+If we scroll down a bit further in `C:\Policys\Mod2Lab1-MSRecommendedDriverBlockList.xml` we come to another intresting part:
 
 ```xml
  <Allow ID="ID_ALLOW_ALL_2" FriendlyName="" FileName="*" />
@@ -63,17 +65,17 @@ The two allow rules also allows us to do something else: we can use multiple Bas
 Lets start by converting the policy to Multiple Policy format and give it a name and a version with the date we downloaded the policy on.
 
 ```powershell
-Set-CIPolicyIdInfo -FilePath C:\Policies\MSRecommendedDriverBlocklist.xml -PolicyName "Custom: Microsoft Driver Block List" -PolicyId "20241016" -ResetPolicyID
+Set-CIPolicyIdInfo -FilePath C:\Policies\Mod2Lab1-MSRecommendedDriverBlockList.xml -PolicyName "Custom: Microsoft Driver Block List" -PolicyId "20241016" -ResetPolicyID
 ```
 The ResetPolicyID parameter converts a policy to Multiple Policy format for us, and also generates a new guid for PolicyID
 
 Deploy the new policy by running the command below.
 ```powershell
 # Get the policyid from the policy file:
-$policyid = ([xml]$id = get-content c:\Policies\MSRecommendedDriverBlocklist.xml).SiPolicy.PolicyID
+$policyid = ([xml]$id = get-content C:\Policies\Mod2Lab1-MSRecommendedDriverBlockList.xml).SiPolicy.PolicyID
 
 # Convert the policy to binary format and make it an active policy by putting it in the right folder
-ConvertFrom-CIPolicy -XmlFilePath C:\Policies\MSRecommendedDriverBlocklist.xml -BinaryFilePath C:\Windows\System32\CodeIntegrity\CiPolicies\Active\$policyid.cip
+ConvertFrom-CIPolicy -XmlFilePath C:\Policies\Mod2Lab1-MSRecommendedDriverBlockList.xml -BinaryFilePath C:\Windows\System32\CodeIntegrity\CiPolicies\Active\$policyid.cip
 
 # Refresh the policy
 & 'C:\tools\RefreshPolicy(AMD64).exe'

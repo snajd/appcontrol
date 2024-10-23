@@ -24,4 +24,6 @@ To view the contents of the EFI-partition you can mount it by running the comman
 
 > mountvol P: /S
 
-1. See if you can find all the corresponding policy files for the policies we listed with citool.exe in the previous exercise
+1. See if you can find all the corresponding policy files for the policies we listed with `citool.exe` in the previous exercise
+
+When you've found them all. Move on to the next lab.
