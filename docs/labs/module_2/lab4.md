@@ -27,7 +27,7 @@ Instead of doing things the hard way, with PowerShell at the command line, we no
 4. Check "Default Windows Mode". This is the same as the DefaultWindows_Audit.xml from the ExamplePolicies.
 5. Name the policy: "Module 2 Lab 4 - Recommended Block list (UMCI/KMCI)" and save it to C:\Policies\Mod2Lab4-Recommended-UMCI-KMCI.xml
 
-**THERE IS A TYPO IN THE SCREENSHOT** GÖR OMOMMOMOMOM
+
 ![WDACWizard](/img/mod2-lab4-img1.jpg)
 
 Press Next

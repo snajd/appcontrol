@@ -17,9 +17,14 @@ Because we are running in an isolated lab environment we don't have access to wh
  We are going to pretend that `powershell_ise.exe` is our system management agent and use that as our Managed Installer! The result we want is that all installations we run via `powershell_ise.exe` will be automatically whitelisted.
 
 ## Prepare the AppLocker policy
-Get-ChildItem C:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe | Get-AppLockerFileInformation | New-AppLockerPolicy -RuleType Publisher -User Everyone -Xml > C:\Policies\AppLocker_MI_PS_ISE.xml
 
-Open C:\Policies\AppLocker_MI_PS_ISE.xml in a text editor and change:
+1. Start by creating an Applocker policy for our "system management agent", PowerShell ISE:
+
+```powershell
+Get-ChildItem C:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe | Get-AppLockerFileInformation | New-AppLockerPolicy -RuleType Publisher -User Everyone -Xml > C:\Policies\AppLocker_MI_PS_ISE.xml
+```
+
+2. Open C:\Policies\AppLocker_MI_PS_ISE.xml in a text editor and change:
 
 ```xml
 <RuleCollection Type="Exe" EnforcementMode="NotConfigured">
@@ -31,7 +36,7 @@ To
 <RuleCollection Type="ManagedInstaller" EnforcementMode="AuditOnly">
 ```
 
-Copy this example policy and paste in a text editor.
+Copy this example policy and paste in a new empty text editor.
 
 ```xml
 <AppLockerPolicy Version="1">
@@ -143,21 +148,34 @@ Copy this example policy and paste in a text editor.
 
 Save the policy as `C:\Policies\AppLocker_MI-Final.xml`
 
-import gpedit
+New we need to deploy this AppLocker policy to make everything PowerShell_ISE.exe installs, flagged as installed by a managed installer.
+
+Open gpedit.msc and browse to: Computer Configuration > Windows Settings > Application Control Policies 
+Right click AppLocker and chose Import Policy. Use `C:\Policies\AppLocker_MI-Final.xml` to Import.
+
 
 ![GPEdit.msc](/img/mod3-lab1-img1.jpg "gpedit.msc") 
 
-start-service appidsvc
 
+Now we need to start the Applocker AppId service. Open an elevated Terminal and run:
+
+```powershell
+Start-Service appidsvc
+```
 
 
 ## Prepare the App Control policy
 
-Set-RuleOption -Option 13 .\Win11-Audit.xml
+1. Create a new Base policy in WDAC Policy Wizard from the Default Windows Mode template.
+2. Give the policy a descriptive name and save it in C:\Policies
+3. Configure the policy to be an Audit policy and *make sure to enable the Managed Installer rule* option.
+4. Deploy the policy and use one of the tools used previously to apply the policy or reboot.
+5. Make sure that the policy is applied by running `citool.exe -lp`
+
 
 ## Test an installation
 
-Download 7-zip from https://www.7-zip.org/download.html to c:\policies\
+Download 7-zip from https://www.7-zip.org/download.html to C:\Install\
 
 Start PowerShell ISE as Administrator and run
 & "C:\Users\RobinEngström\Downloads\7z2408-x64.exe"
@@ -165,11 +183,11 @@ Click through the installation
 
 ## Examine the NTFS Extended attributes
 
-Open a elevated terminal and run:
+Open a elevated terminal and run fsutil to view the Extended Attributes on the installed files from our Managed Installer:
 
 
 ```
-PS C:\Program Files\7-Zip> fsutil file queryEA .\7z.dll
+fsutil file queryEA "C:\Program Files\7-Zip\7z.dll"
 
 Extended Attributes (EA) information for file C:\Program Files\7-Zip\7z.dll:
 
@@ -229,4 +247,12 @@ PS C:\Program Files\7-Zip>
 
 ```
 
-SKRIV MER
+
+"$KERNEL.SMARTLOCKER.ORIGINCLAIM" is the tag placed on the files by AppLocker that will be whitelisted by App Control.
+
+
+**When completed:**
+
+**Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.**
+
+**Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are still applied.**

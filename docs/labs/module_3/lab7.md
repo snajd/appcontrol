@@ -7,13 +7,6 @@ nav_enabled: true
 ---
 
 
-En basepolicy som tillåter suppar och en filepath rule till C:\Corporate\Legacy\Apps
-suppar för alla appar vi packat ovan
-
-Vi borde ha en skräpapp installerad också. Kanske Total Commander för att den är så gammal och fin
-
-
-
 # Lab 7 - Testing policies
 
 In this lab we are going to combine all the policies we created in the previous lab. We are first going to deploy them in audit mode, to verifiy that everything work, and the we are going to switch to enforce mode.

@@ -2,9 +2,11 @@
 title: Lab 6 - Whitelist Kernel Driver
 parent: Module 3
 layout: home
-nav_order: 1
+nav_order: 6
 nav_enabled: false
 ---
+
+# NOT READY MOVE ON TO THE NEXT
 
 
 WIRESHARK!
