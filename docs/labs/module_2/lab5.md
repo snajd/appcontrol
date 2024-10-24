@@ -9,6 +9,15 @@ nav_enabled: true
 
 # Lab 5 - Living of the Land Binaries
 
+**Before starting this Lab, make sure that you don'y have any active policies applied**
+
+
+**Remove the deployed policy from `C:\windows\system32\CodeIntegrity\CiPolicies\Active`.**
+
+**Reboot the virtual machine, log on and use `citool.exe -lp` (or the Event Log) to verify that no custom policies are still applied.**
+
+
+
 One cannot talk about a list of known bypasses without giving some more info. 
 In the security community, we often talk about "living of the land", which simply means that instead of an threat actor (or red teamer) downloads their own tools to a compromised system, they instead use the built in tools and capabilities in the operating system. This is much harder to detect and doesn't trigger antiviruses. Nowadays with the prevalance of EDR:s, they can still trigger some alarms if they for instance use certutil.exe to download a file from the internet.
 
@@ -43,6 +52,8 @@ Installing: Ubuntu
 Ubuntu has been installed.
 The requested operation is successful. Changes will not be effective until the system is rebooted.
 ```
+If you get problems with "Catastrofic failures", try to install WSL [manually](https://learn.microsoft.com/en-us/windows/wsl/install-manual)
+
 
 8. Restart the computer when prompted.
 
