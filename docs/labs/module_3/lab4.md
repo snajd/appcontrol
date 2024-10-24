@@ -39,7 +39,7 @@ Import-module ntobjectmanager
 # Put all the SID in a variable
 $sids = "S-1-3-0; S-1-5-18; S-1-5-19; S-1-5-20; S-1-5-32-544; S-1-5-32-549; S-1-5-32-550; S-1-5-32-551; S-1-5-32-577; S-1-5-32-559; S-1-5-32-568; S-1-15-2-1430448594-2639229838-973813799-439329657-1197984847-4069167804-1277922394; S-1-15-2-95739096-486727260-2033287795-3853587803-1685597119-444378811-2746676523"
 
-$sid -split ";" | foreach-Object {Get-NTSid $_.Trim()}
+$sids -split ";" | foreach-Object {Get-NTSid $_.Trim()}
 ```
 
 The output will list the human readable names hiding behind the well-defined SIDs:

@@ -89,7 +89,7 @@ PS C:\Policies> citool -lp
 Policy:
     Policy ID: 97ada625-70f7-49c9-a9c1-14f021e53de0
     Base Policy ID: 97ada625-70f7-49c9-a9c1-14f021e53de0
-    Friendly Name: Corp: Microsoft Driver Block List
+    Friendly Name: Custom: Microsoft Driver Block List
     Version: 2814751581470720
     Platform Policy: false
     Has File on Disk: true

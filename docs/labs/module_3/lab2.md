@@ -48,7 +48,7 @@ $files = Get-SystemDriver -ScanPath "C:\Program Files\Mozilla Firefox" -UserPEs 
 $files += Get-SystemDriver -ScanPath "C:\Program Files (x86)\Mozilla Maintenance Service\" -UserPEs -NoShadowCopy
 ```
 
-Now we are going to generate a new App Control policy from the information gathered by Get-SystemDriver. We are going to use the Level FilePublisher som we trust the combination of the signer and the file information for all rules. If we would use Publisher, we would whitelist everything signed by Mozilla. Because we saw files that was unsigned, we are going to specify the fallback option of Hash, to create hash rules for Uninstall.exe.
+Now we are going to generate a new App Control policy from the information gathered by Get-SystemDriver. We are going to use the Level FilePublisher as we trust the combination of the signer and the file information for all rules. If we would use Publisher, we would whitelist everything signed by Mozilla. Because we saw files that was unsigned, we are going to specify the fallback option of Hash, to create hash rules for Uninstall.exe.
 
 ```powershell
 # Lets start by creating a folder structure for our applications
