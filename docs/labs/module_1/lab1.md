@@ -47,7 +47,8 @@ Note that some are Base policies and some are supplemental.
 
 4.	Now open Event Viewer and take a look at the `Microsoft-Windows-CodeIntegrity/Operational` log (Applications and Services Logs > Microsoft > Windows > CodeIntegrity > Operational).
 5.	Look at all events with the 3099 event id and verify that we get a log event each time a policy is applied or refreshed. Also note that the name of the policy is written to the event log.
-6.	Run msinfo32.exe and scroll down to the Windows Defender Application Control lines at the bottom.
+6.	Run msinfo32.exe and scroll down to the App Control for Business or 
+Windows Defender Application Control lines at the bottom.
 
 
 When you have examined the built in policies, move on to the next lab.
