@@ -39,9 +39,12 @@ ConvertFrom-CIPolicy -XmlFilePath C:\Policies\Mod1Lab4-Win11-Audit.xml -BinaryFi
 
 Because we are using the multiple policy format, we need to name the policy `"<PolicyIDGUID>.cip"`. You can get the PolicyID from the XML by using the command below:
 
+
 ```powershell
 $policyid = ([xml]$id = get-content C:\Policies\Mod1Lab4-Win11-Audit.xml).SiPolicy.PolicyID
 ```
+Check that $policyid now contains a guid. If the variable is empty - run the above command again.
+
 
 Rename the policy to the correct naming convention:
 
