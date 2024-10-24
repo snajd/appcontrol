@@ -108,6 +108,7 @@ Thats it! Now we could convert both the base policy and the new supplemental pol
 Let's test the policy by using the excellent WDACConfig module instead of deploying it.
 
 WDACConfig needs to be run in PowerShell 7. Use Winget to install it (if not already installed):
+
 ```powershell
 winget install pwsh
 ```

@@ -13,14 +13,15 @@ If you have the [Attack Surface Reduction rule](https://learn.microsoft.com/en-u
 
 
 
-[Loldrivers.io](https://www.loldrivers.io/) is a great resource for finding vulnerable drivers. They list the hashes and provides rules for YARA, sysmon and even WDAC (App Control). They also provide copies of the actual driver files.
+[Loldrivers.io](https://www.loldrivers.io/){:target="_blank"} is a great resource for finding vulnerable drivers. They list the hashes and provides rules for YARA, sysmon and even WDAC (App Control). They also provide copies of the actual driver files.
 
 
 ## Find a blocked driver
 
 If we take look in the `Mod2Lab1-MSRecommendedDriverBlockList.xml` we deployed in Lab 2, we can test if our policy actually is working.
 
-Lets take a random hash and search for it on loldrivers.io:
+Lets take a random hash and search for it on loldrivers.io
+Note that I already found a suitable candidate that is highlighted in the picture below:
 
 ![Hash](/img/mod2-lab3-img1.jpg)
 
