@@ -131,7 +131,7 @@ PS C:\Policies> set-ruleoption -help
 
 Enable User Mode Code Integrity for the policy by setting Option 0
 ```powershell
-Set-RulOption -Option 0 -FilePath C:\Policies\Mod1Lab5-Win11-Enforce.xml
+Set-RuleOption -Option 0 -FilePath C:\Policies\Mod1Lab5-Win11-Enforce.xml
 ```
 
 
