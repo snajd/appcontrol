@@ -16,8 +16,8 @@ There are a few places a deployed policy can exist in, depending on the type of 
 <OS Volume>\Windows\System32\CodeIntegrity\driversipolicy.p7b
 <EFI System Partition>\Microsoft\Boot\CiPolicies\Active\{PolicyId GUID}.cip
 
-<EFI System Partition>\Microsoft\Boot\SiPolicy.p7b
-<EFI System Partition>\Microsoft\Boot\driversipolicy.p7b
+<EFI System Partition>\EFI\Microsoft\Boot\SiPolicy.p7b
+<EFI System Partition>\EFI\Microsoft\Boot\driversipolicy.p7b
 ```
 
 To view the contents of the EFI-partition you can mount it by running the command 
