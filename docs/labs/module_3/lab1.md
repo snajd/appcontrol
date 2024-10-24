@@ -138,7 +138,7 @@ Copy this example policy and paste in a new empty text editor.
     <FilePublisherRule Id="76de31fc-f926-4e48-88c3-032b46f06657" Name="POWERSHELL_ISE.EXE version 10.0.22621.1 exactly in MICROSOFT® WINDOWS® OPERATING SYSTEM from O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
         <Conditions>
             <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® WINDOWS® OPERATING SYSTEM" BinaryName="POWERSHELL_ISE.EXE">
-                <BinaryVersionRange LowSection="10.0.22621.1" HighSection="10.0.22621.1" />
+                <BinaryVersionRange LowSection="10.0.22621.1" HighSection="*" />
             </FilePublisherCondition>
         </Conditions>
     </FilePublisherRule>
@@ -171,7 +171,7 @@ Start-Service appidsvc
 3. Configure the policy to be an Audit policy and *make sure to enable the Managed Installer rule* option.
 4. Deploy the policy and use one of the tools used previously to apply the policy or reboot.
 5. Make sure that the policy is applied by running `citool.exe -lp`
-
+6. Reboot the computer
 
 ## Test an installation
 
