@@ -62,15 +62,15 @@ Get-AuthenticodeSignature C:\install\script.ps1 | select *
 ```
 
 Now open up our trusty WDAC Policy Wizard again. 
-Create a new Base policy with the Default Windows Mode template.
-Make sure that "Disable Script Enforcement" is not checked and that the policy is not in Audit mode.
-In Files Rules, click on +Add Custom Rule
-Under Custom Rule Conditions, Uncheck Kernel Mode and set the rule type to Publisher.
-Click on Browse next to the "reference file" textbox and browse to the newly signed C:\Install\script.ps1
-Click on Create Rule to whitelist everything signed by the CodeSign certificate.
-Press Next to build a create the policy.
+1. Create a new Base policy with the Default Windows Mode template.
+2. Make sure that "Disable Script Enforcement" is not checked and that the policy is not in Audit mode.
+3. In Files Rules, click on +Add Custom Rule
+4. Under Custom Rule Conditions, Uncheck Kernel Mode and set the rule type to Publisher.
+5. Click on Browse next to the "reference file" textbox and browse to the newly signed C:\Install\script.ps1
+6. Click on Create Rule to whitelist everything signed by the CodeSign certificate.
+7. Press Next to build a create the policy.
 
-Deploy the policy and refresh with a tool or reboot the computer to apply the policy.
+8. Deploy the policy and refresh with a tool or reboot the computer to apply the policy.
 
 If everything is working correctly, you should be able to run the signed script and it will "spit out" FullLanguage.
 Create a new script that you don't sign and paste the same content as we did at the beginning of this lab. The unsigned script should write "ConstrainedLanguageMode" to the powershell prompt.

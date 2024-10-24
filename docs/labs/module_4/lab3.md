@@ -10,16 +10,16 @@ nav_enabled: true
 
 ## Download Windows SDK (to get signtool.exe)
 
-https://developer.microsoft.com/sv-se/windows/downloads/windows-sdk/
+[Download the Windows 11 SDK here](https://developer.microsoft.com/sv-se/windows/downloads/windows-sdk/)
 
-Click on "Ladda ner installationsprogrammet" :)
-Open winsdksetup.exe
-Chose Install and press Next, Next, Accept
+1. Click on "Ladda ner installationsprogrammet" :)
+2. When downloaded, open `winsdksetup.exe`
+3. Chose Install and press Next, Next, Accept
 
-Uncheck everything except "Windows SDK Signing Tools for Desktop Apps" and click Install
+4. Uncheck everything except "Windows SDK Signing Tools for Desktop Apps" and click Install
 ![alt text](/img/mod4-lab3-img1.jpg)
 
-Close the window.
+5. Close the window.
 
 Open a new Terminal and verify that you now have access to signtool.exe.
 It should be located in 
@@ -43,7 +43,10 @@ Stop PackageInspector and provide a path to a .cat-file and a .cdf-file
 ## Inspect and Sign the catalog file
 
 Get the filehashes of all the installed files:
+
+```powershell
 get-childitem -recurse Get-ChildItem -Recurse "C:\Program Files\NTCore\Explorer Suite" | Get-FileHash
+```
 
 Doubleclick c:\install\cffexplorer.cat and click the Security Catalog tab.
 Can you find some of the hashes? Why or why not?
@@ -51,7 +54,7 @@ Can you find some of the hashes? Why or why not?
 Open CFF Explorer on the start menu and open one of the files you *did'nt* find a matching hash for.
 CFF Explorer can display the SHA-1 or MD5 embedded hash in the files.
 
-Sign the cat file:
+## Sign the cat file:
 
 & 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe' sign /n "CodeSign" /fd sha256 /v C:\install\cffexplorer.cat
 
@@ -71,16 +74,16 @@ Number of warnings: 0
 Number of errors: 0
 ```
 
+
 Doubleclick C:\install\cffexplorer.cat
 Click on View Signature and see that the file is now signed with our CodeSign-certificate and that the signature is valid.
 
 In order for a computer to trust a catalog file, Windows needs to know of it's existance. For Kernel drivers, that cat file is always stored in the same directory as the other driver files. For our own signed catalogs, we need to distribute the cat file to `%windir%\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}`
 
 
-
-
 If we run 
-PS C:\Users\RobinEngström> Get-AuthenticodeSignature "C:\Program Files\NTCore\Explorer Suite\Task Explorer.exe"
+```powershell
+Get-AuthenticodeSignature "C:\Program Files\NTCore\Explorer Suite\Task Explorer.exe"
 
 
     Directory: C:\Program Files\NTCore\Explorer Suite
@@ -89,7 +92,7 @@ PS C:\Users\RobinEngström> Get-AuthenticodeSignature "C:\Program Files\NTCore\E
 SignerCertificate                         Status                                               Path
 -----------------                         ------                                               ----
                                           NotSigned                                            Task Explorer.exe
-
+```
 
 
 Copy the signed cat file to catroot:
@@ -98,14 +101,35 @@ Microsofts have a few suggestions on how this can be done with Group Policy or C
 `copy-item C:\install\cffexplorer.cat "c:\windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}"`
 
 
-## Add our signing certificate to our App Control Policy
+Now, let's use New-CIPolicy to scan the directory and create a App Control Policy for us:
 
 ```powershell
-Add-SignerRule -FilePath 'C:\Policies\Mod3Lab2-Win11-Base.xml' -CertificatePath C:\Policies\codesign-public.cer -User
+New-CIPolicy -FilePath c:\policies\apps\explorer.xml -ScanPath "C:\Program Files\NTCore\Explorer Suite" -level Publisher -NoShadowCopy -fallback Hash
 ```
 
-Open 'C:\Policies\Mod3Lab2-Win11-Base.xml' and find our singning certificate under <Signers>
-Scroll down to SigningScenario value 12 (this is the User Mode part of the policy) and verify that the SignerId is also stored there.
+When the command completes. Open up ´c:\policies\apps\explorer.xml` and see that we only got one single rule created:
+```xml
+ <Signer ID="ID_SIGNER_S_3" Name="CodeSign">
+      <CertRoot Type="TBS" Value="D7AE1CE5B50C772F7CF195CCE6CE1784FD9015235CE07EF5B1464D534C09C24C" />
+      <CertPublisher Value="CodeSign" />
+    </Signer>
+```
+
+## Examine the effect of the cat file
+
+How would the App Control policy look if the app we just signed wasn't signed?
+We can test that pretty easily by just removing the cat file and run the New-CIPolicy command again.
+
+1. Start by deleting the cat
+```powershell
+del "c:\windows\System32\catroot\{F750E6C3-38EE-11D1-85E5-00C04FC295EE}\cffexplorer.cat"
+```
+2. Run the same command as above to generate a App Control policy
+```powershell
+New-CIPolicy -FilePath c:\policies\apps\explorer-nocat.xml -ScanPath "C:\Program Files\NTCore\Explorer Suite" -level Publisher -NoShadowCopy -fallback Hash
+```
+
+
 
 
 Optionally:
