@@ -41,7 +41,8 @@ Because we are using the multiple policy format, we need to name the policy `"<P
 
 
 ```powershell
-$policyid = ([xml]$id = get-content C:\Policies\Mod1Lab4-Win11-Audit.xml).SiPolicy.PolicyID
+$policyid = ([xml](get-content C:\Policies\Mod1Lab4-Win11-Audit.xml)).SiPolicy.PolicyID
+ 
 ```
 Check that $policyid now contains a guid. If the variable is empty - run the above command again.
 

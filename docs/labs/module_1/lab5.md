@@ -144,7 +144,7 @@ Set-CIPolicyIdInfo -FilePath C:\Policies\Mod1Lab5-Win11-Enforce.xml -PolicyName 
 Get the PolicyID from the xml file:
 
 ```powershell
-$policyid = ([xml]$id = get-content C:\Policies\Mod1Lab5-Win11-Enforce.xml).SiPolicy.PolicyID
+$policyid = ([xml](get-content C:\Policies\Mod1Lab5-Win11-Enforce.xml)).SiPolicy.PolicyID
 ```
 
 Deploy the policy directly:

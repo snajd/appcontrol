@@ -28,7 +28,8 @@ Set a name and version, reset the PolicyID and deploy the policy:
 ```powershell
 cp C:\windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Audit.xml C:\Policies\Mod3Lab5-Audit.xml
 Set-CIPolicyIdInfo -FilePath C:\Policies\Mod3Lab5-Audit.xml -PolicyName "Module 3 Lab 5 Install App Audit" -PolicyId "20241018" -ResetPolicyID
-$policyid = ([xml]$id = get-content C:\Policies\Mod3Lab5-Audit.xml).SiPolicy.PolicyID
+$policyid = ([xml](get-content C:\Policies\Mod3Lab5-Audit.xml)).SiPolicy.PolicyID
+
 ConvertFrom-CIPolicy -XmlFilePath C:\Policies\Mod3Lab5-Audit.xml -BinaryFilePath C:\windows\system32\CodeIntegrity\CiPolicies\Active\$policyid.cip
 ```
 

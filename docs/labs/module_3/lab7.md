@@ -53,11 +53,11 @@ Set-CIPolicyIdInfo -FilePath c:\policies\module3\LegacyApp.xml -BasePolicyToSupp
 Now we only have to convert all the policies to binary format, rename them and copy them to `C:\Windows\System32\CodeIntegrity\CiPolicies\Active`
 
 
-
+```powersbell
 Get-ChildItem *.xml | ForEach-Object {convertfrom-cipolicy -XmlFilePath $_ -BinaryFilePath ((([xml]$policyid = get-content $_).SiPolicy.PolicyID) + ".cip")}
 copy *.cip C:\Windows\system32\CodeIntegrity\CiPolicies\Active\
 & 'C:\tools\RefreshPolicy(AMD64).exe'
-
+```
 
 Clear the `Microsoft-Windows-CodeIntegrity/Operational` event log
 

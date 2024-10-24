@@ -72,7 +72,8 @@ The ResetPolicyID parameter converts a policy to Multiple Policy format for us, 
 Deploy the new policy by running the command below.
 ```powershell
 # Get the policyid from the policy file:
-$policyid = ([xml]$id = get-content C:\Policies\Mod2Lab1-MSRecommendedDriverBlockList.xml).SiPolicy.PolicyID
+$policyid = ([xml](get-content C:\Policies\Mod2Lab1-MSRecommendedDriverBlockList.xml)).SiPolicy.PolicyID
+
 
 # Convert the policy to binary format and make it an active policy by putting it in the right folder
 ConvertFrom-CIPolicy -XmlFilePath C:\Policies\Mod2Lab1-MSRecommendedDriverBlockList.xml -BinaryFilePath C:\Windows\System32\CodeIntegrity\CiPolicies\Active\$policyid.cip

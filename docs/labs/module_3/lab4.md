@@ -112,5 +112,5 @@ Now, if you open `C:\Policies\Apps\LegacyApp.xml` you will find our new rule:
   </FileRules>
 ```
 
-Thats it. We will move on for now an do all the testing of our policies in a later lab.
+Thats it. We will move on for now an do all the testing of our policies in a later
 
