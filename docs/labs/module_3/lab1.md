@@ -178,7 +178,7 @@ Start-Service appidsvc
 Download 7-zip from https://www.7-zip.org/download.html to C:\Install\
 
 Start PowerShell ISE as Administrator and run
-& "C:\Users\RobinEngström\Downloads\7z2408-x64.exe"
+& "C:\Install\7z2408-x64.exe"
 Click through the installation
 
 ## Examine the NTFS Extended attributes
